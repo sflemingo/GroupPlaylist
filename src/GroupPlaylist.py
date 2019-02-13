@@ -5,6 +5,7 @@ Description: Interacts with client to retrieve artists and create a playlist
 """
 import spotipy_tools.SpotipyAuth as auth
 import spotipy_tools.SpotipySearch as search
+import random
 
 SPOTIFY_USERNAME = 'spotify-username' # replace with your spotify username
 SPOTIFY_CLIENT_ID = 'spotify-client-id' # replace with your spotify client id
@@ -31,8 +32,12 @@ def main():
 	track_uris = set()
 	for artist_name in artist_names:
 		artist_uri = search.search_single_artist(spotify, artist_name)
-		track_uris = track_uris|search.artist_top_ten(spotify, artist_uri)
+		artist_tracks = search.artist_top_ten(spotify, artist_uri)
+		if (len(artist_tracks) > 5):
+			artist_tracks = random.sample(artist_tracks, 5)
+		track_uris = track_uris|random.sample(artist_tracks, 5)
 	print(track_uris)
+	
 
 if __name__ == '__main__':
     main()
